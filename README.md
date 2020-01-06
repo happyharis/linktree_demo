@@ -1,10 +1,12 @@
-# linktree_demo_clone
+# Linktree Clone 
 
-A new Flutter project.
+Easy beginner tutorial that you can deploy on your Instagram page.
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+To test on debug : `flutter run -d chrome`
+
+To test on release : `flutter run -d chrome --release`
 
 A few resources to get you started if this is your first Flutter project:
 
