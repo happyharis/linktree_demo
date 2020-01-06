@@ -59,7 +59,7 @@ class Settings extends StatelessWidget {
             onPressed: () {
               firestore.collection('links').add({
                 'title': 'Tik Tok',
-                'url': 'linkedInUrl',
+                'url': 'https://www.tiktok.com/@thehappyharis',
               });
             },
           ),
@@ -71,7 +71,7 @@ class Settings extends StatelessWidget {
             onPressed: () {
               firestore
                   .collection('links')
-                  .doc('6LPUksmcw6avwmO2LuR4')
+                  .doc('anything')
                   .update(data: {'title': 'Tik Tok Tok'});
             },
           ),
@@ -81,10 +81,7 @@ class Settings extends StatelessWidget {
             elevation: 0,
             child: Icon(Icons.delete),
             onPressed: () {
-              firestore
-                  .collection('links')
-                  .doc('6LPUksmcw6avwmO2LuR4')
-                  .delete();
+              firestore.collection('links').doc('anything').delete();
             },
           ),
         ],
