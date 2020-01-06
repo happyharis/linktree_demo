@@ -87,16 +87,6 @@ class Settings extends StatelessWidget {
                   .delete();
             },
           ),
-          FloatingActionButton(
-            heroTag: 'delete',
-            elevation: 0,
-            child: Icon(Icons.delete),
-            onPressed: () {
-              String filePath = 'images/${DateTime.now()}.png';
-
-              fb.storage().ref().child(filePath).put(file);
-            },
-          ),
         ],
       ),
     );
@@ -107,25 +97,6 @@ class Settings extends StatelessWidget {
         .collection('links')
         .onSnapshot
         .map((data) => data.docs.map((doc) => doc.data()).toList());
-  }
-
-  _startFilePicker() async {
-    InputElement uploadInput = FileUploadInputElement();
-    uploadInput.click();
-
-    uploadInput.onChange.listen((e) {
-      // read file content as dataURL
-      final files = uploadInput.files;
-      if (files.length == 1) {
-        final file = files[0];
-        final reader = new FileReader();
-
-        reader.onLoadEnd.listen((e) {
-          // _handleResult(reader.result);
-        });
-        reader.readAsDataUrl(file);
-      }
-    });
   }
 
   Future<List<Map<String, dynamic>>> userLink(fs.Firestore firestore) {
