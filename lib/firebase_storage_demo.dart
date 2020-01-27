@@ -1,9 +1,9 @@
+import 'dart:async';
 import 'dart:html';
 
 import 'package:flutter/material.dart';
 import 'package:firebase/firebase.dart' as fb;
 import 'package:firebase/firestore.dart' as fs;
-import 'package:linktree_demo_clone/firebase_storage_demo.dart';
 import 'package:linktree_demo_clone/linktree.dart';
 
 class Settings extends StatefulWidget {
@@ -54,6 +54,7 @@ class _SettingsState extends State<Settings> {
                   );
               },
             ),
+            Spacer(),
             StreamBuilder<fb.UploadTaskSnapshot>(
               stream: _uploadTask?.onStateChanged,
               builder: (context, snapshot) {
@@ -64,14 +65,20 @@ class _SettingsState extends State<Settings> {
                     ? event.bytesTransferred / event.totalBytes * 100
                     : 0;
 
-                if (progressPercent == 100) {
-                  return Text('Successfully uploaded file 🎊');
-                } else if (progressPercent == 0) {
-                  return SizedBox();
-                } else {
-                  return LinearProgressIndicator(
-                    value: progressPercent,
-                  );
+                switch (event?.state) {
+                  case fb.TaskState.RUNNING:
+                    return LinearProgressIndicator(
+                      value: progressPercent,
+                    );
+                  case fb.TaskState.SUCCESS:
+                    return Text('Success 🎊');
+
+                  case fb.TaskState.ERROR:
+                    return Text('Has error 😢');
+
+                  default:
+                    // Show empty when not uploading
+                    return SizedBox();
                 }
               },
             ),
@@ -79,6 +86,7 @@ class _SettingsState extends State<Settings> {
         ),
       ),
       floatingActionButton: FloatingActionButton.extended(
+        heroTag: 'picker',
         elevation: 0,
         backgroundColor: Colors.tealAccent[400],
         hoverElevation: 0,
@@ -93,6 +101,19 @@ class _SettingsState extends State<Settings> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
+  }
+
+  /// Upload file to firebase storage and updates [_uploadTask] to the latest
+  /// file upload
+  uploadToFirebase(File imageFile) async {
+    final filePath = 'images/${DateTime.now()}.png';
+    setState(() {
+      _uploadTask = fb
+          .storage()
+          .refFromURL('gs://linktree-cc099.appspot.com')
+          .child(filePath)
+          .put(imageFile);
+    });
   }
 
   /// A "select file/folder" window will appear. User will have to choose a file.
@@ -119,7 +140,7 @@ class _SettingsState extends State<Settings> {
         // Source: https://developer.mozilla.org/en-US/docs/Web/API/FileReader/readAsDataURL
 
         reader.onLoadEnd.listen(
-          // After file finish reading and loading, it will be uploaded to firebase storage
+          // After file finiesh reading and loading, it will be uploaded to firebase storage
           (loadEndEvent) async {
             uploadToFirebase(file);
           },
@@ -127,15 +148,12 @@ class _SettingsState extends State<Settings> {
       },
     );
   }
+}
 
-  uploadToFirebase(File imageFile) async {
-    final filePath = 'images/${DateTime.now()}.png';
-    setState(() {
-      _uploadTask = fb
-          .storage()
-          .refFromURL('YOUR FIREBASE STORAGE URL')
-          .child(filePath)
-          .put(imageFile);
-    });
-  }
+// Stream that returns list of links docs
+Stream<List<Map<String, dynamic>>> userLinks(fs.Firestore firestore) {
+  return firestore
+      .collection('links')
+      .onSnapshot
+      .map((data) => data.docs.map((doc) => doc.data()).toList());
 }
