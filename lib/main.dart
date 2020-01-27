@@ -1,9 +1,12 @@
-import 'package:flutter/material.dart';
+import 'dart:async';
+
 import 'package:firebase/firebase.dart' as Firebase;
+import 'package:flutter/material.dart';
 import 'package:linktree_demo_clone/linktree.dart';
+import 'package:linktree_demo_clone/sentry.dart';
 import 'package:linktree_demo_clone/settings.dart';
 
-Future<void> main() async {
+Future<Null> main() async {
   if (Firebase.apps.isEmpty) {
     print(Firebase.apps);
     Firebase.initializeApp(
@@ -26,9 +29,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(primarySwatch: Colors.blue),
-      initialRoute: '/',
+      initialRoute: '/sentry',
       routes: {
         '/': (context) => Linktree(),
+        '/sentry': (context) => SentryExample(),
         '/settings': (context) => Settings()
       },
     );

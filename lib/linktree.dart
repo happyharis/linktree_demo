@@ -79,10 +79,12 @@ class ButtonLink extends StatelessWidget {
   const ButtonLink({
     Key key,
     @required this.text,
-    @required this.url,
+    this.url,
+    this.onPressed,
   }) : super(key: key);
   final String text;
   final String url;
+  final Function onPressed;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -101,7 +103,7 @@ class ButtonLink extends StatelessWidget {
             ),
           ),
           // onPressed: () => html.window.location.href = url,
-          onPressed: () => launch(url),
+          onPressed: onPressed ?? () => launch(url ?? ''),
         ),
       ),
     );
