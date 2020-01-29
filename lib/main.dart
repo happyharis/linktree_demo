@@ -24,12 +24,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Flutter Web Demo',
       theme: ThemeData(primarySwatch: Colors.blue),
       initialRoute: '/',
       routes: {
         '/': (context) => Linktree(),
-        '/settings': (context) => Settings()
+        '/settings': (context) => Settings(),
       },
     );
   }
