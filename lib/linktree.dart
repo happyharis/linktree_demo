@@ -1,5 +1,7 @@
 // import 'dart:html' as html;
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:linktree_demo_clone/maps.dart';
 import 'package:transparent_image/transparent_image.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -45,6 +47,10 @@ class Linktree extends StatelessWidget {
           ButtonLink(
             text: 'Medium',
             url: 'https://medium.com/@muhamad_haris',
+          ),
+          Container(
+            height: 300,
+            child: GoogleMap(),
           ),
           Spacer(),
           Row(
