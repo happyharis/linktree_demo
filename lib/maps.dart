@@ -13,6 +13,9 @@ class GoogleMap extends StatelessWidget {
     ui.platformViewRegistry.registerViewFactory(htmlId, (int viewId) {
       final myLatlng = LatLng(1.3521, 103.8198);
 
+      // another location
+      final myLatlng2 = LatLng(1.4521, 103.9198);
+
       final mapOptions = MapOptions()
         ..zoom = 10
         ..center = LatLng(1.3521, 103.8198);
@@ -32,6 +35,13 @@ class GoogleMap extends StatelessWidget {
         ..label = 'h'
         ..icon =
             'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png');
+
+      // Another marker
+      Marker(
+        MarkerOptions()
+          ..position = myLatlng2
+          ..map = map,
+      );
 
       final infoWindow =
           InfoWindow(InfoWindowOptions()..content = contentString);
